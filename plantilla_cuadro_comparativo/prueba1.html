@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cuadro Comparativo de Compras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            
+        }
+        td {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        th {
+            padding: 5px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #fff;
+            color: #f0f0f0;
+            background-color: #001489
+        }
+        .header {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+        .observations {
+            margin-top: 20px;
+            border: 1px solid #000;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h3>Cuadro Comparativo de Compras de Proveedores Indirectos</h3>
+        <div>
+            <strong>Dirigido a:</strong> <span id="dirigido">C</span><br />
+            <strong>Fecha:</strong> <span id="fecha">27-nov-24</span><br />
+            <strong>Requisición:</strong> <span id="requisicion">008997</span>
+        </div>
+    </div>
+    <table id="comparisonTable">
+        <thead>
+            <tr id="mainHeader">
+                <th rowspan="3">Partida</th>
+                <th rowspan="3">Cantidad</th>
+                <th rowspan="3">Unidad</th>
+                <th rowspan="3">Código</th>
+                <th rowspan="3">Artículo</th>
+                <th rowspan="3">Costo Última Compra</th>
+                <th rowspan="3">Stock de Almacén</th>
+                <th rowspan="3">Consumo Mensual</th>
+                <th rowspan="3">Fecha de Última Compra</th>
+            </tr>
+            <tr id="paymentConditionsHeader">
+                <!-- Condiciones de pago -->
+            </tr>
+            <tr id="subHeader">
+                <!-- Subencabezados -->
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Filas dinámicas -->
+        </tbody>
+        <tfoot>
+            <tr id="importRow">
+                <td colspan="9" style="text-align: right;"><strong>Importe:</strong></td>
+                <!-- Importes dinámicos -->
+            </tr>
+            <tr id="ivaRow">
+                <td colspan="9" style="text-align: right;"><strong>IVA:</strong></td>
+                <!-- IVA dinámico -->
+            </tr>
+            <tr id="totalsRow">
+                <td colspan="9" style="text-align: right;"><strong>Totales:</strong></td>
+                <!-- Totales dinámicos -->
+            </tr>
+        </tfoot>
+    </table>
+    <div class="observations">
+        <strong>Observaciones:</strong>
+        <p id="observaciones"></p>
+    </div>
+
+    <script>
+        const data = {
+            dirigido: "C",
+            fecha: "27-nov-24",
+            requisicion: "008997",
+            observaciones: "EQUIPO DE CÓMPUTO PARA LABORATORIO DE AGUA (CALIDAD-EA/BMZ)",
+            proveedores: [
+                { nombre: "VICTOR MANUEL ALFATIF FLORES", condicionPago: "15 DIAS CREDITO", moneda: "MXN", iva: 0.16 },
+                { nombre: "CYBERPUERTA SA DE CV", condicionPago: "30 AÑOS", moneda: "MXN", iva: 0.16 },
+                { nombre: "SCRAM, SA DE CV", condicionPago: "10 % CONTRA ENTREGA", moneda: "USD", iva: 0.08 }
+            ],
+            partidas: [
+                {
+                    partida: 1,
+                    cantidad: 1,
+                    unidad: "SERVICIO",
+                    codigo: "GJSE1001",
+                    articulo: "GASTO DE ENVÍO",
+                    costoUltimaCompra: "N/A",
+                    stockAlmacen: 0,
+                    consumoMensual: 0,
+                    fechaUltimaCompra: "N/A",
+                    condicionesPago: [
+                        { costoUnitario: "$580.00", subtotal: "$580.00", incremento: "0%" },
+                        { costoUnitario: "$477.41", subtotal: "$477.41", incremento: "0%" },
+                        { costoUnitario: "$250.00", subtotal: "$250.00", incremento: "0%" }
+                    ]
+                },
+                {
+                    partida: 2,
+                    cantidad: 10,
+                    unidad: "PZA",
+                    codigo: "3000242",
+                    articulo: "DIADEMA USB CON MICRÓFONO LOGITECH H390",
+                    costoUltimaCompra: "N/A",
+                    stockAlmacen: 0,
+                    consumoMensual: 0,
+                    fechaUltimaCompra: "N/A",
+                    condicionesPago: [
+                        { costoUnitario: "$580.00", subtotal: "$580.00", incremento: "0%" },
+                        { costoUnitario: "$577.41", subtotal: "$577.41", incremento: "0%" },
+                        { costoUnitario: "$575.00", subtotal: "$575.00", incremento: "0%" }
+                    ]
+                },
+                {
+                    partida: 3,
+                    cantidad: 1,
+                    unidad: "PZA",
+                    codigo: "3000242",
+                    articulo: "DIADEMA USB CON MICRÓFONO LOGITECH H390",
+                    costoUltimaCompra: "N/A",
+                    stockAlmacen: 0,
+                    consumoMensual: 0,
+                    fechaUltimaCompra: "N/A",
+                    condicionesPago: [
+                        { costoUnitario: "$580.00", subtotal: "$580.00", incremento: "0%" },
+                        { costoUnitario: "$577.41", subtotal: "$577.41", incremento: "0%" },
+                        { costoUnitario: "$575.00", subtotal: "$575.00", incremento: "0%" }
+                    ]
+                },
+                {
+                    partida: 4,
+                    cantidad: 1,
+                    unidad: "PZA",
+                    codigo: "3000242",
+                    articulo: "DIADEMA USB CON MICRÓFONO LOGITECH H390",
+                    costoUltimaCompra: "N/A",
+                    stockAlmacen: 0,
+                    consumoMensual: 0,
+                    fechaUltimaCompra: "N/A",
+                    condicionesPago: [
+                        { costoUnitario: "$580.00", subtotal: "$580.00", incremento: "0%" },
+                        { costoUnitario: "$577.41", subtotal: "$577.41", incremento: "0%" },
+                        { costoUnitario: "$575.00", subtotal: "$575.00", incremento: "0%" }
+                    ]
+                }
+            ]
+        };
+
+        function renderData(data) {
+            document.getElementById("dirigido").textContent = data.dirigido;
+            document.getElementById("fecha").textContent = data.fecha;
+            document.getElementById("requisicion").textContent = data.requisicion;
+            document.getElementById("observaciones").textContent = data.observaciones;
+
+            const mainHeader = document.getElementById("mainHeader");
+            const paymentConditionsHeader = document.getElementById("paymentConditionsHeader");
+            const subHeader = document.getElementById("subHeader");
+            const tableBody = document.getElementById("tableBody");
+            const importRow = document.getElementById("importRow");
+            const ivaRow = document.getElementById("ivaRow");
+            const totalsRow = document.getElementById("totalsRow");
+
+            // Generar encabezados
+            data.proveedores.forEach(proveedor => {
+                const th = document.createElement("th");
+                th.colSpan = 3;
+                th.textContent = proveedor.nombre;
+                mainHeader.appendChild(th);
+
+                const conditionTh = document.createElement("th");
+                conditionTh.colSpan = 3;
+                conditionTh.textContent = proveedor.condicionPago;
+                paymentConditionsHeader.appendChild(conditionTh);
+            });
+
+            // Subencabezados
+            data.proveedores.forEach(() => {
+                ["Costo Unitario", "Subtotal", "Incremento"].forEach(subHeaderText => {
+                    const th = document.createElement("th");
+                    th.textContent = subHeaderText;
+                    subHeader.appendChild(th);
+                });
+            });
+
+            // Cuerpo de la tabla
+            data.partidas.forEach(partida => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${partida.partida}</td>
+                    <td>${partida.cantidad}</td>
+                    <td>${partida.unidad}</td>
+                    <td>${partida.codigo}</td>
+                    <td>${partida.articulo}</td>
+                    <td>${partida.costoUltimaCompra}</td>
+                    <td>${partida.stockAlmacen}</td>
+                    <td>${partida.consumoMensual}</td>
+                    <td>${partida.fechaUltimaCompra}</td>
+                `;
+
+                partida.condicionesPago.forEach(condicion => {
+                    tr.innerHTML += `
+                        <td>${condicion.costoUnitario}</td>
+                        <td>${condicion.subtotal}</td>
+                        <td>${condicion.incremento}</td>
+                    `;
+                });
+
+                tableBody.appendChild(tr);
+            });
+
+            // Totales
+            data.proveedores.forEach((proveedor, index) => {
+                const importe = data.partidas.reduce((sum, partida) => {
+                    const subtotal = parseFloat(partida.condicionesPago[index]?.subtotal.replace("$", "").replace(",", "")) || 0;
+                    return sum + subtotal;
+                }, 0);
+
+                const iva = importe * proveedor.iva;
+                const total = importe + iva;
+
+                importRow.innerHTML += `
+                    <td>${proveedor.moneda}</td>
+                    <td><strong>$${importe.toFixed(2)}</strong></td>
+                    <td></td>
+                `;
+                ivaRow.innerHTML += `
+                    <td></td>
+                    <td><strong>$${iva.toFixed(2)}</strong></td>
+                    <td></td>
+                `;
+                totalsRow.innerHTML += `
+                    <td></td>
+                    <td><strong>$${total.toFixed(2)}</strong></td>
+                    <td></td>
+                `;
+            });
+        }
+
+        renderData(data);
+    </script>
+</body>
+</html>

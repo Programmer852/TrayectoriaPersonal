@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swiper.js Ejemplos</title>
+  <script src="../_lib/assets/js/swiper-bundle.min.js"></script>
+  <link rel="stylesheet" href="../_lib/assets/css/swiper-bundle.min.css">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+    .swiper-container {
+      width: 100vw;
+      height: 100vh;
+    }
+    .swiper-slide {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #f5f5f5;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+    iframe, img, table {
+      max-width: 90%;
+      max-height: 70%;
+    }
+    blockquote {
+      font-style: italic;
+      color: #555;
+      text-align: center;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    ul li {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <!-- Transición de deslizamiento -->
+      <div class="swiper-slide">
+        <h1>Transición: Deslizamiento</h1>
+        <p>Ejemplo básico con transición predeterminada.</p>
+      </div>
+
+      <!-- Transición de desvanecimiento -->
+      <div class="swiper-slide" style="background-color: #eaeaea;">
+        <h1>Transición: Desvanecimiento</h1>
+        <p>Las diapositivas se desvanecen en lugar de deslizarse.</p>
+      </div>
+
+      <!-- Transición en cubo -->
+      <div class="swiper-slide" style="background-color: #d3d3d3;">
+        <h1>Transición: Cubo</h1>
+        <p>Las diapositivas giran como un cubo 3D.</p>
+      </div>
+
+      <!-- Carrusel con autoplay -->
+      <div class="swiper-slide">
+        <h1>Autoplay</h1>
+        <p>El carrusel avanza automáticamente cada 3 segundos.</p>
+      </div>
+
+      <!-- Carrusel con navegación y paginación -->
+      <div class="swiper-slide">
+        <h1>Navegación y Paginación</h1>
+        <p>Incluye botones para avanzar y retroceder, y paginación interactiva.</p>
+      </div>
+
+      <!-- Modo parallax -->
+      <div class="swiper-slide" data-swiper-parallax="-100">
+        <h1>Modo Parallax</h1>
+        <p>Fondo y elementos se desplazan a diferentes velocidades.</p>
+      </div>
+
+      <!-- Carga diferida de imágenes -->
+      <div class="swiper-slide swiper-lazy">
+        <h1>Carga Diferida</h1>
+        <img data-src="imagen-lazy.jpg" class="swiper-lazy">
+        <div class="swiper-lazy-preloader"></div>
+      </div>
+
+      <!-- Vista vertical -->
+      <div class="swiper-slide" style="background-color: #f0f0f0;">
+        <h1>Vista Vertical</h1>
+        <p>Las diapositivas se desplazan de arriba hacia abajo.</p>
+      </div>
+
+      <!-- Sincronización entre sliders -->
+      <div class="swiper-slide">
+        <h1>Sincronización de Sliders</h1>
+        <p>Ejemplo de sliders sincronizados.</p>
+      </div>
+    </div>
+
+    <!-- Botones de navegación -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <!-- Paginación -->
+    <div class="swiper-pagination"></div>
+  </div>
+
+  <script>
+    // Configuración de diferentes efectos y funcionalidades
+    const swiper = new Swiper('.swiper-container', {
+      loop: true,
+      autoplay: {
+        delay: 3000,
+      },
+      effect: 'coverflow', // 'slide' Cambiar a 'fade', 'cube', 'coverflow', 'flip' para otros efectos
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      lazy: true, // Carga diferida
+      parallax: true, // Efecto parallax
+    });
+
+    // Ejemplo de sincronización de sliders
+    const swiper1 = new Swiper('.swiper-container1', {});
+    const swiper2 = new Swiper('.swiper-container2', {});
+    swiper1.controller.control = swiper2;
+    swiper2.controller.control = swiper1;
+  </script>
+</body>
+</html>

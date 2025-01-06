@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informe Interactivo</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    .swiper-container {
+      height: 100%;
+    }
+    .swiper-slide {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .chart-container {
+      width: 80%;
+      max-width: 600px;
+      height: 400px; /* Altura fija */
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <!-- Panel 1 -->
+      <div class="swiper-slide bg-blue-500">
+        <div class="text-center text-white">
+          <h1 class="text-3xl font-bold mb-4">Métrica 1</h1>
+          <div class="chart-container">
+            <canvas id="chart1"></canvas>
+          </div>
+        </div>
+      </div>
+      <!-- Panel 2 -->
+      <div class="swiper-slide bg-green-500">
+        <div class="text-center text-white">
+          <h1 class="text-3xl font-bold mb-4">Métrica 2</h1>
+          <div class="chart-container">
+            <canvas id="chart2"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Navigation Buttons -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+
+  <script>
+    // Initialize Swiper.js
+    const swiper = new Swiper('.swiper-container', {
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      loop: true,
+    });
+
+    // Chart.js Example Data
+    const chart1 = new Chart(document.getElementById('chart1'), {
+      type: 'bar',
+      data: {
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril'],
+        datasets: [{
+          label: 'Ventas',
+          data: [10, 20, 30, 40],
+          backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true, // Mantiene proporciones correctas
+      }
+    });
+
+    const chart2 = new Chart(document.getElementById('chart2'), {
+      type: 'line',
+      data: {
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril'],
+        datasets: [{
+          label: 'Ingresos',
+          data: [15, 25, 35, 45],
+          borderColor: 'rgba(54, 162, 235, 1)',
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          fill: true,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true, // Mantiene proporciones correctas
+      }
+    });
+  </script>
+</body>
+</html>

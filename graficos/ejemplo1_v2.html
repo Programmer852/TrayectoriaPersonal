@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informe Dinámico</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    .swiper-container {
+      height: 100%;
+    }
+    .swiper-slide {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .chart-container {
+      width: 90%;
+      max-width: 800px;
+      height: 80vh;
+      margin: auto;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <div id="loader" class="text-center mt-10">Cargando gráficos...</div>
+  <div class="swiper-container hidden" id="swiper-container">
+    <div class="swiper-wrapper" id="swiper-wrapper">
+      <!-- Los paneles se agregarán dinámicamente aquí -->
+    </div>
+    <!-- Navigation Buttons -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+
+  <script>
+    // URL del backend que genera el JSON maestro
+    const apiUrl = 'obtenerDatos1.php'; // Cambiar por la URL real
+
+    // Función para generar gráficos dinámicos
+    const generateCharts = async () => {
+      try {
+        // Obtiene el JSON maestro desde el backend
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        // Referencia al contenedor Swiper
+        const swiperWrapper = document.getElementById('swiper-wrapper');
+
+        // Itera sobre las gráficas en el JSON maestro
+        data.graficas.forEach((grafica, index) => {
+          // Crear un nuevo panel
+          const slide = document.createElement('div');
+          slide.classList.add('swiper-slide', grafica.colorFondo);
+
+          // Contenido del panel
+          slide.innerHTML = `
+            <div class="text-center text-white">
+              <h1 class="text-3xl font-bold mb-4">${grafica.titulo}</h1>
+              <div class="chart-container">
+                <canvas id="chart-${index}"></canvas>
+              </div>
+            </div>
+          `;
+
+          // Añadir el panel al contenedor Swiper
+          swiperWrapper.appendChild(slide);
+
+          // Renderizar el gráfico
+          const ctx = document.getElementById(`chart-${index}`).getContext('2d');
+          new Chart(ctx, {
+            type: grafica.tipoGrafico,
+            data: grafica.datos,
+            options: {
+              responsive: true,
+              maintainAspectRatio: false, // Permitir gráficos más grandes
+            },
+          });
+        });
+
+        // Muestra el carrusel una vez generado
+        document.getElementById('loader').classList.add('hidden');
+        document.getElementById('swiper-container').classList.remove('hidden');
+
+        // Inicializa Swiper
+        new Swiper('.swiper-container', {
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+          loop: true,
+        });
+      } catch (error) {
+        console.error('Error al generar los gráficos:', error);
+        document.getElementById('loader').textContent = 'Error al cargar los gráficos.';
+      }
+    };
+
+    // Generar los gráficos al cargar la página
+    generateCharts();
+  </script>
+</body>
+</html>

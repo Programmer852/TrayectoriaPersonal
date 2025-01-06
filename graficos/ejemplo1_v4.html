@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informe Dinámico</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    .swiper-container {
+      height: 100%;
+    }
+    .swiper-slide {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f9f9f9; /* Fondo minimalista */
+    }
+    .chart-container {
+      width: 90vw; /* 90% del ancho del viewport */
+      height: 90vh; /* 90% del alto del viewport */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff; /* Fondo blanco para los gráficos */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+      border-radius: 10px;
+      padding: 10px;
+    }
+    canvas {
+      width: 100% !important; /* Forzar ancho completo */
+      height: 100% !important; /* Forzar altura completa */
+    }
+    h1 {
+      color: #333; /* Texto oscuro minimalista */
+    }
+  </style>
+</head>
+<body>
+  <div id="loader" class="text-center mt-10">Cargando gráficos...</div>
+  <div class="swiper-container hidden" id="swiper-container">
+    <div class="swiper-wrapper" id="swiper-wrapper">
+      <!-- Los paneles se agregarán dinámicamente aquí -->
+    </div>
+    <!-- Navigation Buttons -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+
+  <script>
+    const apiUrl = 'obtenerDatos1.php'; // URL actualizada
+
+    const generateCharts = async () => {
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        const swiperWrapper = document.getElementById('swiper-wrapper');
+
+        data.graficas.forEach((grafica, index) => {
+          const slide = document.createElement('div');
+          slide.classList.add('swiper-slide');
+
+          slide.innerHTML = `
+            <div class="text-center">
+              <h1 class="text-3xl font-bold mb-4">${grafica.titulo}</h1>
+              <div class="chart-container">
+                <canvas id="chart-${index}"></canvas>
+              </div>
+            </div>
+          `;
+
+          swiperWrapper.appendChild(slide);
+
+          const ctx = document.getElementById(`chart-${index}`).getContext('2d');
+          new Chart(ctx, {
+            type: grafica.tipoGrafico,
+            data: grafica.datos,
+            options: {
+              responsive: true,
+              maintainAspectRatio: false, // Permite gráficos más grandes
+              plugins: {
+                legend: {
+                  labels: {
+                    color: '#333',
+                  },
+                },
+              },
+              scales: {
+                x: {
+                  ticks: {
+                    color: '#333',
+                  },
+                },
+                y: {
+                  ticks: {
+                    color: '#333',
+                  },
+                },
+              },
+            },
+          });
+        });
+
+        document.getElementById('loader').classList.add('hidden');
+        document.getElementById('swiper-container').classList.remove('hidden');
+
+        new Swiper('.swiper-container', {
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+          loop: true,
+        });
+      } catch (error) {
+        console.error('Error al generar los gráficos:', error);
+        document.getElementById('loader').textContent = 'Error al cargar los gráficos.';
+      }
+    };
+
+    generateCharts();
+  </script>
+</body>
+</html>
